@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog do Batman</title>
+
+    <!-- importando o bootstrap pra nao ter que fazer css do zero pq ngm merece -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            /* fundo do batmão com um preto meio transparente por cima pra ler direito */
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('img/fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f8f9fa;
+            min-height: 100vh;
+        }
+        .navbar-brand img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 2px #fff);
+        }
+        .style-post-img {
+            max-height: 400px;
+            width: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- navbar topo -->
+    <nav class="navbar navbar-dark bg-black border-bottom border-secondary sticky-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <img src="img/batsinal.png" alt="Bat-Sinal">
+                <span>Blog do Batman</span>
+            </a>
+
+            <div id="divUsuarioHeader">
+                <!-- aqui o js injeta os botoes ou o nome do usuario logado -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- feed principal -->
+    <div class="container mt-4" style="max-width: 680px;">
+
+        <!-- caixa de criar post (aparece so se for o admin) -->
+        <div id="containerCriarPost" class="card bg-dark text-white border-secondary mb-4 p-3 shadow d-none">
+            <h5 class="mb-3">Criar Nova Publicação</h5>
+            <form id="formPost">
+                <div class="mb-2">
+                    <input type="text" id="postTitulo" class="form-control bg-black text-white border-secondary" placeholder="Título da publicação" required>
+                </div>
+                <div class="mb-2">
+                    <textarea id="postTexto" class="form-control bg-black text-white border-secondary" rows="3" placeholder="No que você está pensando?" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-white-50" style="font-size: 0.85rem;">Foto do Post (Opcional)</label>
+                    <input type="file" id="postArquivoFoto" class="form-control bg-black text-white border-secondary" accept="image/*">
+                </div>
+                <button type="button" class="btn btn-warning fw-bold w-100" onclick="criarPost()">Publicar no Feed</button>
+            </form>
+        </div>
+
+        <div id="feedPosts">
+            <!-- os posts vao cair aqui dinamicamente -->
+        </div>
+    </div>
+
+    <!-- modal de login -->
+    <div class="modal fade" id="modalLogin" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">Entrar na Conta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">E-mail</label>
+                        <input type="email" id="loginEmail" class="form-control bg-black text-white border-secondary" placeholder="seu@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Senha</label>
+                        <input type="password" id="loginSenha" class="form-control bg-black text-white border-secondary" placeholder="******">
+                    </div>
+                    <small class="text-white-50">Admin: <code>admin@batman.com</code> / senha: <code>123</code></small>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning fw-bold" onclick="fazerLogin()">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal de cadastro -->
+    <div class="modal fade" id="modalRegistro" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">Criar Nova Conta</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Nome Completo</label>
+                        <input type="text" id="regNome" class="form-control bg-black text-white border-secondary" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">E-mail</label>
+                        <input type="email" id="regEmail" class="form-control bg-black text-white border-secondary" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Senha</label>
+                        <input type="password" id="regSenha" class="form-control bg-black text-white border-secondary" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Foto de Perfil</label>
+                        <input type="file" id="regArquivoFoto" class="form-control bg-black text-white border-secondary" accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-warning fw-bold" onclick="cadastrarUsuario()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- js do bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- nosso script -->
+    <script src="script.js"></script>
+    <script>
+        atualizarHeader();
+        renderizarFeed();
+        configurarLeitoresDeArquivos();
+    </script>
+</body>
+
+</html>
