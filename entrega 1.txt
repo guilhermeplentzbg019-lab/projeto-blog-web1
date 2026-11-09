@@ -1,0 +1,54 @@
+Tema Escolhido:
+
+vou fazer um Blog. Um site postar qualquer coisa interessante, cadastrar pessoas e deixar o pessoal comentar nos posts, tudo rodando liso no navegador.
+
+
+
+O que o sistema faz:
+
+Basicamente, o painel admin vai deixar a gente gerenciar tudo (criar, listar, atualizar e deletar os dados), e na parte pública qualquer pessoa que entrar no site vai conseguir ver as postagens que estão salvas no localStorage.
+
+
+
+Estrutura JSON:
+
+
+
+Autores:
+
+id (Número): Identificação única do cara que postou.
+
+nome (String): Nome do cara que escreveu.
+
+email (String): O e-mail de contato dele.
+
+bio (String): Um resumo curto sobre a pessoa.
+
+
+
+Posts:
+
+id (Número): ID do post.
+
+autorId (Número): Quem foi o autor que escreveu o post (ligado com a tabela de autores).
+
+titulo (String): O título da postagem.
+
+conteudo (String): O texto do post em si.
+
+dataPublicacao (String): a data que foi postado.
+
+
+
+Comentários:
+
+id (Número): ID do comentário.
+
+postId (Número): De qual post esse comentário tá falando (ligado com o post).
+
+autorComentario (String): Nome do leitor que adicionou o comentario.
+
+texto (String): O que a pessoa digitou lá embaixo.
+
+dataComentario (String): Quando foi enviado.
+
